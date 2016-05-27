@@ -79,8 +79,14 @@ $('#autocomplete').on('input', function (value) {
 $("#ui").autocomplete({
   source: dates.v3,
   select: function(event, ui) {
-    var value = ui.item.value + " - ";
-    $(this).prev('input').val(value);
+    var formValue = $(this).val().split(" ");
+    var value = formValue[0] + " - ";
+    console.log("value 1", value);
+    console.log('first value', formValue);
+    $("#ui").val(value);
+    event.preventDefault();
+    var selectedObj = ui.item;
+    $("#ui").val(value);
   }
 });
 
@@ -92,13 +98,24 @@ $("#ui").on('input', function (value) {
     start = result[0];
     end = result[result.length - 1];
 
+
     if(end) {
       $("#ui").autocomplete("search", end);
       $("#ui").autocomplete({
         select: function(event, ui) {
-          var value = $(this).val() + " "+ ui.item.value;
-          console.log('value', value);
-          $(this).prev('input').val(value);
+          var formValue = $(this).val().split(" ");
+          if(end) {
+
+            var value = formValue[0] + " - "+ ui.item.value;
+            console.log('end value', formValue);
+
+            console.log("end", ui.item.value);
+
+            event.preventDefault();
+            var selectedObj = ui.item;
+            $("#ui").val(value);
+
+          }
         }
       });
     }
