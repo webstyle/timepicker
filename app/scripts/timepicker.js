@@ -74,10 +74,4 @@ var worklyPicker = function (element, duration) {
   }
 }
 
-
-worklyPicker("#ui", 15);
-console.log('Hi1');
-
-$(".save").click(function () {
-  console.log($("#ui").val());
-});
+module.exports = worklyPicker;

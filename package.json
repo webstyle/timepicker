@@ -39,5 +39,8 @@
         "single"
       ]
     }
+  },
+  "dependencies": {
+    "gulp-browserify": "^0.5.1"
   }
 }
