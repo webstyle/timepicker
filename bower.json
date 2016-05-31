@@ -8,7 +8,8 @@
     "formatter.js": "formatter#^0.1.5",
     "EasyAutocomplete": "^1.3.5",
     "devbridge-autocomplete": "^1.2.24",
-    "select2": "^4.0.3"
+    "select2": "^4.0.3",
+    "numeral": "^1.5.3"
   },
   "overrides": {
     "bootstrap-sass": {
