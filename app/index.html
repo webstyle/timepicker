@@ -19,12 +19,20 @@
   <!-- endbuild -->
 
   <!-- build:css styles/main.css -->
-  <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
 
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
+
+  <style rel="stylesheet" type="text/css">
+    .autocomplete-suggestions { border: 1px solid #999; background: #ccc; overflow: auto; }
+    .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+    .autocomplete-selected { background: #F0F0F0; }
+    .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+    .autocomplete-group { padding: 2px 5px; }
+    .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+  </style>
 </head>
 
 <body>
@@ -43,7 +51,7 @@
     <div class="form-group">
       <label for="ui">Time</label>
       <input type="text" class="form-control" id="ui" placeholder="start - end">
-    </div>
+    </dijjv>
 
     <button class="btn btn-success save">Save</button>
 
@@ -60,14 +68,6 @@
 <!-- bower:js -->
 <script src="/bower_components/jquery/dist/jquery.js"></script>
 <script src="/bower_components/moment/moment.js"></script>
-<script src="/bower_components/formatter.js/dist/formatter.js"></script>
-<script src="/bower_components/formatter.js/dist/formatter.min.js"></script>
-<script src="/bower_components/formatter.js/dist/jquery.formatter.js"></script>
-<script src="/bower_components/formatter.js/dist/jquery.formatter.min.js"></script>
-<script src="/bower_components/EasyAutocomplete/dist/jquery.easy-autocomplete.js"></script>
-<script src="/bower_components/devbridge-autocomplete/dist/jquery.autocomplete.js"></script>
-<script src="/bower_components/select2/dist/js/select2.js"></script>
-<script src="/bower_components/numeral/numeral.js"></script>
 <script src="scripts/ui/jquery-ui.js"></script>
 <!-- endbower -->
 <!-- endbuild -->

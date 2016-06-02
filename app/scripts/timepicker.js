@@ -1,23 +1,69 @@
 (function ($) {
 
   var timePickerFormat;
+
+  /**
+   * Timeni regEx yordamida to'g'rilash funksiyasi
+   * @param str
+   * @returns {string|XML}
+   */
+  function timeFormat(str) {
+
+    if (!/:/.test(str)) {
+      str += (timePickerFormat == '24h') ? ':00' : ':00 AM';
+    }
+
+    return str
+      .replace(/^\d{1}:/, '0$&')
+      .replace(/:\d{1}$/, '$&0');
+  }
+
+
   /**
    * Save qilganda start va end timelarni validatsiya qilib qaytaradi.
    * @returns {{start: *, end: *}}
    */
   $.fn.timesPickerSave = function () {
-    var formValue = $(this).val().split(" - ");
-    var first = formValue[0];
-    var second = formValue[1];
-    var start, end;
 
+    var formValue, first, second, firstSplited, secondSplited, firstSplited2, secondSplited2, start, end, maxLength, validtion;
 
+    first = {};
+    second = {};
+
+    formValue = $(this).val().split(" - ");
     if (formValue.length > 1) {
 
-      if (parseInt(formValue[0]) < 24 || parseInt(formValue[1])) {
+      firstSplited = formValue[0].split(":");
+      secondSplited = formValue[1].split(":");
 
-        start = time24h(formValue[0]);
-        end = time24h(formValue[1]);
+      firstSplited2 = formValue[0].split("");
+      secondSplited2 = formValue[0].split("");
+
+      first.result = formValue[0];
+      first.hour = firstSplited[0];
+      first.minut = firstSplited[1];
+
+      second.result = formValue[1];
+      second.hour = secondSplited[0];
+      second.minut = secondSplited[1];
+
+      switch (timePickerFormat) {
+        case "24h":
+          maxLength = 25;
+          first.result = (first.result == 24) ? '00' : first.result;
+          second.result = (second.result == 24) ? '00' : second.result;
+          break;
+        case "12h":
+          maxLength = 13;
+          break;
+        default:
+          maxLength = 25;
+      }
+
+      if(first.result < maxLength && second.result < maxLength) {
+
+        start = (firstSplited2.length < 4)? timeFormat(first.result) : first.result;
+        end = (secondSplited2.length < 4)? timeFormat(second.result) : second.result;
 
         var result = {
           start: start,
@@ -28,41 +74,14 @@
         return result;
 
       } else {
-        console.error('errorku format xato berdiz');
-      }
-    }
-
-
-
-
-    /**
-     * Timeni regEx yordamida to'g'rilash funksiyasi
-     * @param str
-     * @returns {string|XML}
-     */
-    function time24h(str) {
-
-      if (!/:/.test(str)) {
-        str += ':00';
+        console.error('format errorku');
       }
 
-      var strArray = str.split("");
-      var regexStart, regexEnd;
-
-        // RegEx with 24hours format
-      console.log('RegEx with 24hours time format')
-
-      regexStart = (strArray.length > 2) ? /^\d{1}:/ : /^\d{2}:/;
-      regexEnd = /:\d{1}$/;
-
-
-      return str
-        .replace(regexStart, '$&')
-        .replace(regexEnd, '$&0');
+    } else {
+      console.error('field required');
     }
 
   };
-
 
   /**
    * Times Pickerni ko'rsatish va autocomplete
@@ -89,7 +108,7 @@
 
 
     format = (settings.format == '24h') ? "HH:mm" : "h:mm a";
-    timePickerFormat = format;
+    timePickerFormat = settings.format;
 
     var duration = settings.duration;
 
@@ -191,6 +210,7 @@
         dates.push(current.format(format));
       }
     }
+
 
   };
 
