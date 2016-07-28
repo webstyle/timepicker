@@ -1,0 +1,34 @@
+{
+  "name": "formatter.js",
+  "version": "0.1.5",
+  "devDependencies": {
+    "easy-amdtest": "~0.0.1",
+    "requirejs": "~2.1.11",
+    "jquery": "~1.11.0",
+    "fakey": "~0.0.8"
+  },
+  "ignore": [
+    "**/.*",
+    "Gruntfile.js",
+    "src",
+    "docs",
+    "test"
+  ],
+  "main": [
+    "dist/formatter.js",
+    "dist/formatter.min.js",
+    "dist/jquery.formatter.js",
+    "dist/jquery.formatter.min.js"
+  ],
+  "homepage": "https://github.com/firstopinion/formatter.js",
+  "_release": "0.1.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.5",
+    "commit": "51c068bed4e78ba5db7f44911f7ae8ef259f692f"
+  },
+  "_source": "https://github.com/firstopinion/formatter.js.git",
+  "_target": "^0.1.5",
+  "_originalSource": "formatter",
+  "_direct": true
+}
