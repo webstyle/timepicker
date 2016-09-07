@@ -1,4 +1,4 @@
-(function ($) {
+(function($) {
 
   var timePickerFormat;
 
@@ -23,14 +23,14 @@
    * Save qilganda start va end timelarni validatsiya qilib qaytaradi.
    * @returns {{start: *, end: *}}
    */
-  $.fn.timesPickerSave = function () {
+  function reformat(element) {
 
     var formValue, first, second, firstSplited, secondSplited, firstSplited2, secondSplited2, start, end, maxLength, validtion;
 
     first = {};
     second = {};
 
-    formValue = $(this).val().split(" - ");
+    formValue = $(element).val().split(" - ");
     if (formValue.length > 1) {
 
       firstSplited = formValue[0].split(":");
@@ -60,17 +60,17 @@
           maxLength = 25;
       }
 
-      if(first.result < maxLength && second.result < maxLength) {
+      if (first.result < maxLength && second.result < maxLength) {
 
-        start = (firstSplited2.length < 4)? timeFormat(first.result) : first.result;
-        end = (secondSplited2.length < 4)? timeFormat(second.result) : second.result;
+        start = (firstSplited2.length < 4) ? timeFormat(first.result) : first.result;
+        end = (secondSplited2.length < 4) ? timeFormat(second.result) : second.result;
 
         var result = {
           start: start,
           end: end
         };
 
-        $(this).val(result.start + " - " + result.end);
+        $(element).val(result.start + " - " + result.end);
         return result;
 
       } else {
@@ -86,7 +86,7 @@
   /**
    * Times Pickerni ko'rsatish va autocomplete
    */
-  $.fn.timesPicker = function (options) {
+  $.fn.timesPicker = function(options) {
 
     var dates;
     var start = null;
@@ -126,22 +126,22 @@
     /**
      * v3 with jquery ui autocomplete
      */
-    $(element).bind("keydown", function (event) {
+    $(element).bind("keydown", function(event) {
       if (event.keyCode === $.ui.keyCode.TAB &&
         $(this).autocomplete("instance").menu.active) {
         event.preventDefault();
       }
     }).autocomplete({
-      focus: function () {
+      focus: function() {
         // prevent value inserted on focus
         return false;
       },
-      source: function (request, response) {
+      source: function(request, response) {
         // delegate back to autocomplete, but extract the last term
         response($.ui.autocomplete.filter(
           dates, extractLast(request.term)));
       },
-      select: function (event, ui) {
+      select: function(event, ui) {
         var value = ui.item.value + " - ";
         $(element).val(value);
         event.preventDefault();
@@ -151,7 +151,7 @@
     });
 
 
-    $(element).on('input', function (value) {
+    $(element).on('input', function(value) {
 
       var result = value.currentTarget.value.split(' - ');
 
@@ -163,19 +163,19 @@
         if (end) {
           $(element).autocomplete("search", end);
 
-          $(element).bind("keydown", function (event) {
+          $(element).bind("keydown", function(event) {
             if (event.keyCode === $.ui.keyCode.TAB &&
               $(this).autocomplete("instance").menu.active) {
               event.preventDefault();
             }
           }).autocomplete({
 
-            focus: function () {
+            focus: function() {
               // prevent value inserted on focus
               return false;
             },
 
-            select: function (event, ui) {
+            select: function(event, ui) {
 
               var formValue = $(this).val().split(" - ");
               var value;
@@ -195,6 +195,10 @@
         }
       }
 
+    });
+
+    $(element).focusout(function() {
+      reformat(element);
     });
 
     /*
