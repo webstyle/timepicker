@@ -1,4 +1,4 @@
-# Time range picker with autocomplete
+# Time range picker
 Demo http://webstyle.github.io/timepicker
 
 
