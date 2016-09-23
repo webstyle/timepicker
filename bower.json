@@ -2,7 +2,7 @@
   "name": "timespicker",
   "private": false,
   "dependencies": {
-    "moment": "^2.13.0",
+    "moment": "^2.13.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
