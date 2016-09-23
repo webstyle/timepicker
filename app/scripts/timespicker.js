@@ -151,6 +151,9 @@
     });
 
 
+    /**
+     * Autocomplete on typing to input form
+     */
     $(element).on('input', function(value) {
 
       var result = value.currentTarget.value.split(' - ');
@@ -197,6 +200,10 @@
 
     });
 
+
+    /**
+     * Reformat on focusout
+     */
     $(element).focusout(function() {
       reformat(element);
     });

@@ -4,6 +4,9 @@
   "dependencies": {
     "moment": "^2.13.0"
   },
+  "main": [
+    "app/scripts/timespicker.js"
+  ],
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5"
