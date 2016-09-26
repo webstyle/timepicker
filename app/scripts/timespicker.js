@@ -43,7 +43,9 @@
     secondSplited = formValue[1].split(":");
 
     firstSplited2 = formValue[0].split("");
-    secondSplited2 = formValue[0].split("");
+    secondSplited2 = formValue[1].split("");
+
+    console.log(firstSplited2, secondSplited2);
 
     startTime.result = formValue[0];
     startTime.hour = firstSplited[0];
