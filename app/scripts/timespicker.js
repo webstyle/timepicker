@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 
   var timePickerFormat;
 
@@ -10,7 +10,7 @@
   function timeFormat(str) {
 
     if (!/:/.test(str)) {
-      str += (timePickerFormat == '24h') ? ':00' : ':00 AM';
+      str += (timePickerFormat == '24h') ? ':00' : ':00 am';
     }
 
     return str
@@ -19,74 +19,70 @@
   }
 
 
+  function ThrowError(message) {
+    throw new Error(message);
+  }
+
+
   /**
    * Save qilganda start va end timelarni validatsiya qilib qaytaradi.
    * @returns {{start: *, end: *}}
    */
-  function reformat(element) {
+  function reformat(element, callback) {
 
-    var formValue, first, second, firstSplited, secondSplited, firstSplited2, secondSplited2, start, end, maxLength, validtion;
+    var formValue, startTime, endTime, firstSplited, secondSplited, firstSplited2, secondSplited2, start, end, maxLength;
 
-    first = {};
-    second = {};
+    startTime = {};
+    endTime = {};
 
     formValue = $(element).val().split(" - ");
-    if (formValue.length > 1) {
+    if (formValue.length < 1) return callback('field required');
 
-      firstSplited = formValue[0].split(":");
-      secondSplited = formValue[1].split(":");
 
-      firstSplited2 = formValue[0].split("");
-      secondSplited2 = formValue[0].split("");
+    firstSplited = formValue[0].split(":");
+    secondSplited = formValue[1].split(":");
 
-      first.result = formValue[0];
-      first.hour = firstSplited[0];
-      first.minut = firstSplited[1];
+    firstSplited2 = formValue[0].split("");
+    secondSplited2 = formValue[0].split("");
 
-      second.result = formValue[1];
-      second.hour = secondSplited[0];
-      second.minut = secondSplited[1];
+    startTime.result = formValue[0];
+    startTime.hour = firstSplited[0];
+    startTime.minut = firstSplited[1];
 
-      switch (timePickerFormat) {
-        case "24h":
-          maxLength = 25;
-          first.result = (first.result == 24) ? '00' : first.result;
-          second.result = (second.result == 24) ? '00' : second.result;
-          break;
-        case "12h":
-          maxLength = 13;
-          break;
-        default:
-          maxLength = 25;
-      }
+    endTime.result = formValue[1];
+    endTime.hour = secondSplited[0];
+    endTime.minut = secondSplited[1];
 
-      if (first.result < maxLength && second.result < maxLength) {
-
-        start = (firstSplited2.length < 4) ? timeFormat(first.result) : first.result;
-        end = (secondSplited2.length < 4) ? timeFormat(second.result) : second.result;
-
-        var result = {
-          start: start,
-          end: end
-        };
-
-        $(element).val(result.start + " - " + result.end);
-        return result;
-
-      } else {
-        console.error('format errorku');
-      }
-
-    } else {
-      console.error('field required');
+    switch (timePickerFormat) {
+      case "24h":
+        maxLength = 25;
+        startTime.result = (startTime.result == 24) ? '00' : startTime.result;
+        endTime.result = (endTime.result == 24) ? '00' : endTime.result;
+        break;
+      case "12h":
+        maxLength = 13;
+        break;
+      default:
+        maxLength = 25;
     }
 
+    if (startTime.result > maxLength && endTime.result > maxLength) return callback('not hour number');
+
+    start = (firstSplited2.length < 4) ? timeFormat(startTime.result) : startTime.result;
+    end = (secondSplited2.length < 4) ? timeFormat(endTime.result) : endTime.result;
+
+    var result = {
+      start: start,
+      end: end
+    };
+
+    callback(null, result);
   };
 
   /**
    * Times Pickerni ko'rsatish va autocomplete
    */
-  $.fn.timesPicker = function(options) {
+  $.fn.timesPicker = function (options) {
 
     var dates;
     var start = null;
@@ -126,22 +122,22 @@
     /**
      * v3 with jquery ui autocomplete
      */
-    $(element).bind("keydown", function(event) {
+    $(element).bind("keydown", function (event) {
       if (event.keyCode === $.ui.keyCode.TAB &&
         $(this).autocomplete("instance").menu.active) {
         event.preventDefault();
       }
     }).autocomplete({
-      focus: function() {
+      focus: function () {
         // prevent value inserted on focus
         return false;
       },
-      source: function(request, response) {
+      source: function (request, response) {
         // delegate back to autocomplete, but extract the last term
         response($.ui.autocomplete.filter(
           dates, extractLast(request.term)));
       },
-      select: function(event, ui) {
+      select: function (event, ui) {
         var value = ui.item.value + " - ";
         $(element).val(value);
         event.preventDefault();
@@ -154,7 +150,7 @@
     /**
      * Autocomplete on typing to input form
      */
-    $(element).on('input', function(value) {
+    $(element).on('input', function (value) {
 
       var result = value.currentTarget.value.split(' - ');
 
@@ -166,19 +162,19 @@
         if (end) {
           $(element).autocomplete("search", end);
 
-          $(element).bind("keydown", function(event) {
+          $(element).bind("keydown", function (event) {
             if (event.keyCode === $.ui.keyCode.TAB &&
               $(this).autocomplete("instance").menu.active) {
               event.preventDefault();
             }
           }).autocomplete({
 
-            focus: function() {
+            focus: function () {
               // prevent value inserted on focus
               return false;
             },
 
-            select: function(event, ui) {
+            select: function (event, ui) {
 
               var formValue = $(this).val().split(" - ");
               var value;
@@ -204,8 +200,12 @@
     /**
      * Reformat on focusout
      */
-    $(element).focusout(function() {
-      reformat(element);
+    $(element).focusout(function () {
+      reformat(element, function (err, result) {
+        if(err) return ThrowError(err);
+
+        $(element).val(result.start + " - " + result.end);
+      });
     });
 
     /*
