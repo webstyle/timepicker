@@ -1,4 +1,4 @@
 $("#ui").timesPicker({
-  duration: 20,
-  format: '12h'
+  duration: 15,
+  format: '24h'
 });

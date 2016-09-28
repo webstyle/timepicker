@@ -35,9 +35,9 @@
     startTime = {};
     endTime = {};
 
-    formValue = $(element).val().split(" - ");
-    if (formValue.length < 1) return callback('field required');
+    formValue = $(element).val().split(' - ');
 
+    if (formValue[1].length < 1) return callback('field require');
 
     firstSplited = formValue[0].split(":");
     secondSplited = formValue[1].split(":");
@@ -48,19 +48,22 @@
     console.log(firstSplited2, secondSplited2);
 
     startTime.result = formValue[0];
-    startTime.hour = firstSplited[0];
+    startTime.hour = parseInt(firstSplited[0]);
     startTime.minut = firstSplited[1];
 
     endTime.result = formValue[1];
-    endTime.hour = secondSplited[0];
+    endTime.hour = parseInt(secondSplited[0]);
     endTime.minut = secondSplited[1];
+
+    if(firstSplited.length > 1 && secondSplited.length > 1) {
+      console.log(startTime.minut);
+      console.log(endTime.minut);
+    }
 
     switch (timePickerFormat) {
       case "24h":
         maxLength = 25;
-        startTime.result = (startTime.result == 24) ? '00' : startTime.result;
-        endTime.result = (endTime.result == 24) ? '00' : endTime.result;
-        break;
+        startTime.result = (startTime.result == 24) ? '00' : startTime.result; endTime.result = (endTime.result == 24) ? '00' : endTime.result; break;
       case "12h":
         maxLength = 13;
         break;
@@ -68,7 +71,11 @@
         maxLength = 25;
     }
 
-    if (startTime.result > maxLength && endTime.result > maxLength) return callback('not hour number');
+    console.log('maxlength', maxLength);
+    console.log('startTime result', startTime.hour);
+    console.log('endTime result', endTime.hour);
+
+    if (startTime.hour >= maxLength || endTime.hour >= maxLength) return callback('not hour number');
 
     start = (firstSplited2.length < 4) ? timeFormat(startTime.result) : startTime.result;
     end = (secondSplited2.length < 4) ? timeFormat(endTime.result) : endTime.result;
